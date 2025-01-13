@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace QuizApp.Models{
     public class Question{
         //Properties
@@ -7,6 +9,7 @@ namespace QuizApp.Models{
         public int CorrectOption{get;set;}
 
         //Constructor
+        [JsonConstructor]
         private Question(string text, List<string> options, int correctOption){
             if(string.IsNullOrWhiteSpace(text)){
                 throw new ArgumentException("Question text cannot be empty!");
