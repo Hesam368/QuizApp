@@ -2,15 +2,15 @@ using System.Text.Json;
 using QuizApp.Models;
 
 namespace QuizApp.Services{
-    public class QuizManager{
+    public class QuizManager : IQuizManager{
         //Singleton pattern
-        private static QuizManager? _instance;
-        public static QuizManager Instance => _instance ??= new QuizManager();
+        // private static QuizManager? _instance;
+        // public static QuizManager Instance => _instance ??= new QuizManager();
 
         private int score = 0;
 
         //Constructor
-        private QuizManager(){}
+        //private QuizManager(){}
 
         public Question CreateQuestion(string text, List<string> options, int correctOption){
             return Question.Create(text, options,correctOption);

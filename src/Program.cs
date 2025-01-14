@@ -1,8 +1,16 @@
-﻿using QuizApp.Models;
+﻿using Microsoft.Extensions.DependencyInjection;
+using QuizApp.Models;
 using QuizApp.Services;
 public class Program{
     public static void Main(){
-        var quizManager = QuizManager.Instance;
+        //var quizManager = QuizManager.Instance;
+
+        //Setup DI Container
+        var serviceProvider = new ServiceCollection()
+            .AddSingleton<IQuizManager, QuizManager>() //Register QuizManager as IQuizManager
+            .BuildServiceProvider();
+
+        var quizManager = serviceProvider.GetRequiredService<IQuizManager>();
         
         //Create Questions
         var question1 = quizManager.CreateQuestion("What is the capital of England?",
