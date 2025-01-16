@@ -1,14 +1,27 @@
 # Description
-A console-based quiz application that allows users to answer multiple-choice questions, and provides a performance summary at the end of the quiz. Designed as a simple and fun way to practice programming concepts while showcasing object-oriented programming principles.
+A console-based quiz application that allows users to:
+Answer multiple-choice questions.
+Import questions dynamically from a JSON file.
+Track their performance and view a detailed quiz summary.
+The application follows modern software practices like Dependency Injection (DI) for better scalability and testability.
+
+## Features
+Start a quiz with pre-defined or imported questions.
+Import questions from a JSON file for flexibility.
+Dependency Injection using .NET's Microsoft.Extensions.DependencyInjection for cleaner architecture and loose coupling.
+Detailed performance summary at the end of each quiz.
 
 ## Planned Enhancements
-Import questions from a JSON file.
-Add a timer for each question (optional).
-Include categories or difficulty levels for quizzes.
-Save quiz results for future reference.
+Export Quiz Results: Save quiz results to a file for tracking performance.
+Leaderboard: Track and display top scores.
+Question Categories: Organize questions by topics or difficulty levels.
+Multiplayer Mode: Compete with friends in a quiz.
 
 ## Technologies Used
-Language: C#
+C#: Core language for implementation.
+.NET: Console application framework.
+JSON: For dynamic question import.
+Microsoft.Extensions.DependencyInjection: Built-in DI framework to register and manage dependencies.
 
 ## How to Run
 Clone the repository.
