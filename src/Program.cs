@@ -1,8 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using QuizApp.Models;
 using QuizApp.Services;
-public class Program{
-    public static void Main(){
+
+public class Program
+{
+    public static void Main()
+    {
         //var quizManager = QuizManager.Instance;
 
         //Setup DI Container
@@ -11,38 +14,24 @@ public class Program{
             .BuildServiceProvider();
 
         var quizManager = serviceProvider.GetRequiredService<IQuizManager>();
-        
-        //Create Questions
-        var question1 = quizManager.CreateQuestion("What is the capital of England?",
-            new List<string>{"Paris", "London", "Berlin"}, 2);
-        var question2 = quizManager.CreateQuestion("Which Continent is England in?",
-            new List<string>{"Europe", "Asia", "Africa", "America"}, 1);
-        var question3 = quizManager.CreateQuestion("What is the currency of England?",
-            new List<string>{"Dollar", "Rial", "Euro", "Pound"}, 4);
+        Quiz? quiz = null;
 
-        //Create Quiz
-        var quiz = quizManager.CreateQuiz(new List<Question>{question1, question2, question3});
-        
-        while(true){
+        while (true)
+        {
             Console.WriteLine("\n---Quiz Application---");
-            Console.WriteLine("1. Start Quiz");
-            Console.WriteLine("2. Import Quiz from JSON");
+            Console.WriteLine("1. Start Manual Quiz");
+            Console.WriteLine("2. Start Quiz from JSON");
             Console.WriteLine("3. Exit");
             Console.Write("Select an option: ");
             string? input = Console.ReadLine();
 
-            switch(input){
+            switch (input)
+            {
                 case "1":
-                    quizManager.GetQuiz(quiz);
-                    quizManager.DisplaySummary(quiz);
+                    quiz = quizManager.CreateQuiz(new ManualQuizCreation());
                     break;
                 case "2":
-                    Console.Write("Enter the file path: ");
-                    string? filePath = Console.ReadLine();
-                    if(!string.IsNullOrWhiteSpace(filePath)){
-                        var questions = quizManager.ImportQuiz(filePath);
-                        quiz = quizManager.CreateQuiz(questions);
-                    }
+                    quiz = quizManager.CreateQuiz(new JsonQuizCreation());
                     break;
                 case "3":
                     Console.WriteLine("Exiting...");
@@ -50,6 +39,11 @@ public class Program{
                 default:
                     Console.WriteLine("Invalid option! Please try again.");
                     break;
+            }
+            if (quiz != null)
+            {
+                quizManager.GetQuiz(quiz);
+                quizManager.DisplaySummary(quiz);
             }
         }
     }

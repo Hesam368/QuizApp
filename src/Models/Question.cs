@@ -1,23 +1,29 @@
 using System.Text.Json.Serialization;
 
-namespace QuizApp.Models{
-    public class Question{
+namespace QuizApp.Models
+{
+    public class Question
+    {
         //Properties
-        public Guid Id {get; private set;}
-        public string Text {get; set;}
-        public List<string> Options {get; set;}
-        public int CorrectOption{get;set;}
+        private Guid Id;
+        public string Text { get; }
+        public List<string> Options { get; }
+        public int CorrectOption { get; }
 
         //Constructor
         [JsonConstructor]
-        private Question(string text, List<string> options, int correctOption){
-            if(string.IsNullOrWhiteSpace(text)){
+        private Question(string text, List<string> options, int correctOption)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
                 throw new ArgumentException("Question text cannot be empty!");
             }
-            if(options == null || options.Count < 2){
+            if (options == null || options.Count < 2)
+            {
                 throw new ArgumentException("Question must have at least 2 options!");
             }
-            if(correctOption < 1 || correctOption > options.Count){
+            if (correctOption < 1 || correctOption > options.Count)
+            {
                 throw new ArgumentException("Correct Option must be within the range of options!");
             }
             Id = Guid.NewGuid();
@@ -25,7 +31,9 @@ namespace QuizApp.Models{
             Options = options;
             CorrectOption = correctOption;
         }
-        internal static Question Create(string text, List<string> options, int correctOption){
+
+        internal static Question Create(string text, List<string> options, int correctOption)
+        {
             return new Question(text, options, correctOption);
         }
     }
