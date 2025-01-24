@@ -11,6 +11,8 @@ public class Program
         //Setup DI Container
         var serviceProvider = new ServiceCollection()
             .AddSingleton<IQuizManager, QuizManager>() //Register QuizManager as IQuizManager
+            .AddSingleton<ManualQuizCreation>() //Register ManualQuizCreation
+            .AddSingleton<JsonQuizCreation>() //Register JsonQuizCreation
             .BuildServiceProvider();
 
         var quizManager = serviceProvider.GetRequiredService<IQuizManager>();
@@ -28,10 +30,16 @@ public class Program
             switch (input)
             {
                 case "1":
-                    quiz = quizManager.CreateQuiz(new ManualQuizCreation());
+                    quiz = RetrieveQuiz(
+                        quizManager,
+                        serviceProvider.GetRequiredService<ManualQuizCreation>()
+                    );
                     break;
                 case "2":
-                    quiz = quizManager.CreateQuiz(new JsonQuizCreation());
+                    quiz = RetrieveQuiz(
+                        quizManager,
+                        serviceProvider.GetRequiredService<JsonQuizCreation>()
+                    );
                     break;
                 case "3":
                     Console.WriteLine("Exiting...");
@@ -45,6 +53,19 @@ public class Program
                 quizManager.GetQuiz(quiz);
                 quizManager.DisplaySummary(quiz);
             }
+        }
+    }
+
+    private static Quiz? RetrieveQuiz(IQuizManager quizManager, IGetQuiz quizSource)
+    {
+        try
+        {
+            return quizManager.CreateQuiz(quizSource);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+            return null;
         }
     }
 }

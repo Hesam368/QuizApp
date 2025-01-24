@@ -5,7 +5,7 @@ namespace QuizApp.Models
     public class Question
     {
         //Properties
-        private Guid Id;
+        public Guid Id { get; }
         public string Text { get; }
         public List<string> Options { get; }
         public int CorrectOption { get; }

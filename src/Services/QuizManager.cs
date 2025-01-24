@@ -25,27 +25,30 @@ namespace QuizApp.Services
             score = 0;
             foreach (var question in quiz.Questions)
             {
-                Console.WriteLine(question.Text);
-                for (int i = 1; i <= question.Options.Count; i++)
+                PresentQuestion(question);
+            }
+        }
+
+        private void PresentQuestion(Question question)
+        {
+            Console.WriteLine(question.Text);
+            for (int i = 1; i <= question.Options.Count; i++)
+            {
+                Console.WriteLine($"{i}.{question.Options[i - 1]}");
+            }
+            while (true)
+            {
+                Console.Write("Select an option: ");
+                var selectedOption = int.TryParse(Console.ReadLine(), out int result) ? result : 0;
+                if (result > 0 && result <= question.Options.Count)
                 {
-                    Console.WriteLine($"{i}.{question.Options[i - 1]}");
-                }
-                while (true)
-                {
-                    Console.Write("Select an option: ");
-                    var selectedOption = int.TryParse(Console.ReadLine(), out int result)
-                        ? result
-                        : 0;
-                    if (result > 0 && result <= question.Options.Count)
+                    if (selectedOption == question.CorrectOption)
                     {
-                        if (selectedOption == question.CorrectOption)
-                        {
-                            score++;
-                        }
-                        break;
+                        score++;
                     }
-                    Console.WriteLine("Invalid option! Please select a valid option.");
+                    break;
                 }
+                Console.WriteLine("Invalid option! Please select a valid option.");
             }
         }
 

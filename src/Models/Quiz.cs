@@ -3,7 +3,7 @@ namespace QuizApp.Models
     public class Quiz
     {
         //Properties
-        private Guid Id;
+        public Guid Id { get; }
         public List<Question> Questions { get; }
 
         //Constructor
