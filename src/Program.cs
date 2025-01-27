@@ -13,41 +13,23 @@ public class Program
             .AddSingleton<IQuizManager, QuizManager>() //Register QuizManager as IQuizManager
             .AddSingleton<ManualQuizCreation>() //Register ManualQuizCreation
             .AddSingleton<JsonQuizCreation>() //Register JsonQuizCreation
+            .AddSingleton<MenuHandler>() //Register MenuHandler
             .BuildServiceProvider();
 
         var quizManager = serviceProvider.GetRequiredService<IQuizManager>();
+        var MenuHandler = serviceProvider.GetRequiredService<MenuHandler>();
         Quiz? quiz = null;
 
         while (true)
         {
-            Console.WriteLine("\n---Quiz Application---");
-            Console.WriteLine("1. Start Manual Quiz");
-            Console.WriteLine("2. Start Quiz from JSON");
-            Console.WriteLine("3. Exit");
-            Console.Write("Select an option: ");
-            string? input = Console.ReadLine();
-
-            switch (input)
+            IGetQuiz? quizSource = MenuHandler.DisplayMenu();
+            if (quizSource == null)
             {
-                case "1":
-                    quiz = RetrieveQuiz(
-                        quizManager,
-                        serviceProvider.GetRequiredService<ManualQuizCreation>()
-                    );
-                    break;
-                case "2":
-                    quiz = RetrieveQuiz(
-                        quizManager,
-                        serviceProvider.GetRequiredService<JsonQuizCreation>()
-                    );
-                    break;
-                case "3":
-                    Console.WriteLine("Exiting...");
-                    return;
-                default:
-                    Console.WriteLine("Invalid option! Please try again.");
-                    break;
+                System.Console.WriteLine("Exiting...");
+                return;
             }
+
+            quiz = RetrieveQuiz(quizManager, quizSource);
             if (quiz != null)
             {
                 quizManager.GetQuiz(quiz);
